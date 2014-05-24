@@ -20,7 +20,9 @@ Meteor.publishWithRelations = (params) ->
         mapFilter[mapping.key] = id
       else
         objKey = mapping.key
-        mapFilter._id = obj[mapping.key]
+        mapFilter._id = _.reduce mapping.key.split('.'), (_obj, _key) ->
+          if _.isObject _obj then _obj[_key] else undefined
+        , obj
         if _.isArray(mapFilter._id)
           mapFilter._id = {$in: mapFilter._id}
       _.extend(mapFilter, mapping.filter)
