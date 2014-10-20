@@ -1,7 +1,7 @@
 Package.describe({
 	name:"lepozepo:publish-with-relations",
 	summary: "Publish associated collections at once.",
-	version:"1.0.0",
+	version:"1.1.0",
 	git:"https://github.com/Lepozepo/meteor-publish-with-relations"
 });
 
