@@ -1,16 +1,5 @@
-# Publish with relations
-
-Publish with relations builds on Tom's [gist](https://gist.github.com/tmeasday/4042603) 
-to provide a convenient way to publish associated records.
-
-## Installation
-
-Publish with relations can be installed with [Meteorite](https://github.com/oortcloud/meteorite/).
-From inside a Meteorite-managed app:
-
-``` sh
-$ mrt add publish-with-relations
-```
+# NOTE
+__This package is obsolete now in favor of [cottz:publish-with-relations](https://github.com/Goluis/meteor-publish-with-relations/)__
 
 ## API
 
@@ -52,12 +41,4 @@ comments to the ```Comments``` collection and corresponding authors to
 the ```Meteor.users``` collection so we have all the data we need to
 display a post.
 
-You can check another (more complex) example at this [gist](https://gist.github.com/erundook/5012259).
-
-### Changelog
-#### v0.1.4
-- Foreign key can be an array now. Thanks [Tom](http://github.com/tmeasday)!
-
-### Compatibility notes
-Use <= v0.1.1 for meteor version < 0.5.7
 
