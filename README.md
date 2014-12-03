@@ -1,5 +1,6 @@
 # NOTE
-__This package is obsolete now in favor of [cottz:publish-with-relations](https://github.com/Goluis/meteor-publish-with-relations/)__
+__I highly recommend using this package in combination with [cottz:publish-with-relations](https://github.com/Goluis/meteor-publish-with-relations/)__
+__This package is an updated version of [tmeasday:publish-with-relations](https://atmospherejs.com/tmeasday/publish-with-relations) the key difference is better support for arrays and nested arrays__
 
 ## Install via atmosphere
 ```meteor add lepozepo:publish-with-relations```
