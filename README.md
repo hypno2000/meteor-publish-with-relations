@@ -1,6 +1,9 @@
 # NOTE
 __This package is obsolete now in favor of [cottz:publish-with-relations](https://github.com/Goluis/meteor-publish-with-relations/)__
 
+## Install via atmosphere
+```meteor add lepozepo:publish-with-relations```
+
 ## API
 
 ### Basics

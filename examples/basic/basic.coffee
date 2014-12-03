@@ -20,6 +20,10 @@
 if Meteor.isServer
 	Meteor.startup ->
 		if Things.find().count() is 0
+			# add a particular thing
+			Things.insert
+				name:"Particular Thing"
+
 			for thing in [0..10]
 				subthing = SubThings.insert
 					name:"Subthing #{thing}"
@@ -82,7 +86,7 @@ if Meteor.isServer
 if Meteor.isClient
 	# Meteor.subscribe "things"
 	# Meteor.subscribe "thing", "6FsKDdztL4t5rtTJ4"
-	Meteor.subscribe "thing_with_depth", "6FsKDdztL4t5rtTJ4"
+	Meteor.subscribe "thing_with_depth", "CK5fiTEgoKg4TSTtp"
 
 
 

@@ -24,7 +24,7 @@ Meteor.publishWithRelations = (params) ->
 
 				key_map = mapping.key.split "."
 				if key_map.length > 1
-					if _.isArray obj[key_map[0]]
+					if obj[key_map[0]] and _.isArray obj[key_map[0]]
 						ids = []
 						_.each key_map, (k,i) ->
 							if i is 0 #if start
@@ -36,12 +36,15 @@ Meteor.publishWithRelations = (params) ->
 
 						mapFilter._id = 
 							$in:ids
+					else
+						mapFilter = null
 				else
 					mapFilter._id = obj[mapping.key]
 
-				if _.isArray(mapFilter._id)
+				if mapFilter and mapFilter._id and _.isArray(mapFilter._id)
 					mapFilter._id = {$in: mapFilter._id}
 
+			# console.log mapFilter
 			_.extend(mapFilter, mapping.filter)
 			_.extend(mapOptions, mapping.options)
 			if mapping.mappings
