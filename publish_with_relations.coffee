@@ -45,7 +45,8 @@ Meteor.publishWithRelations = (params) ->
 					mapFilter._id = {$in: mapFilter._id}
 
 			# console.log mapFilter
-			_.extend(mapFilter, mapping.filter)
+			if mapFilter
+				_.extend(mapFilter, mapping.filter)
 			_.extend(mapOptions, mapping.options)
 			if mapping.mappings
 				Meteor.publishWithRelations
