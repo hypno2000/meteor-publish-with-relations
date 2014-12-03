@@ -47,7 +47,9 @@ Meteor.publishWithRelations = (params) ->
 			# console.log mapFilter
 			if mapFilter
 				_.extend(mapFilter, mapping.filter)
+
 			_.extend(mapOptions, mapping.options)
+
 			if mapping.mappings
 				Meteor.publishWithRelations
 					handle: pub
@@ -58,8 +60,9 @@ Meteor.publishWithRelations = (params) ->
 					_noReady: true
 			else
 				associations[id][objKey]?.stop()
-				associations[id][objKey] =
-					publishAssoc(mapping.collection, mapFilter, mapOptions)
+				if mapFilter
+					associations[id][objKey] =
+						publishAssoc(mapping.collection, mapFilter, mapOptions)
 
 	filter = params.filter
 	options = params.options
