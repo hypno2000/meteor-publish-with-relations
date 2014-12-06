@@ -56,6 +56,7 @@ if Meteor.isServer
 						deep_things:[
 							quantity:Math.ceil Math.random() * 10
 							deep_thing:deepthing
+						]
 					]
 
 				ReverseThings.insert
