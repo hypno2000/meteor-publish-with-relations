@@ -86,7 +86,7 @@ if Meteor.isServer
 					collection:OtherThings
 				}
 				{
-					foreign_key:"_id"
+					# foreign_key:"_id" #This is optional, defaults to _id
 					key:"thing"
 					collection:ReverseThings
 				}
