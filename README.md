@@ -60,7 +60,6 @@ Meteor.publish "things", ->
 				collection:OtherThings
 			}
 			{
-				foreign_key:"_id"
 				key:"thing"
 				collection:ReverseThings
 			}
