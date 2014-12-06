@@ -65,11 +65,10 @@ if Meteor.isServer
 					property:Random.id()
 
 
-	Meteor.publish "other_things", ->
+	Meteor.publish "things", ->
 		Meteor.publishWithRelations
 			handle:this
 			collection:Things
-			filter:{}
 			mappings:[
 				{
 					foreign_key:"sub_things.deep_things.deep_thing"
@@ -133,7 +132,7 @@ if Meteor.isServer
 
 
 if Meteor.isClient
-	Meteor.subscribe "other_things"
+	Meteor.subscribe "things"
 	# Meteor.subscribe "thing", "FDsQKsZoPgCEpcnWW"
 	# Meteor.subscribe "thing_with_depth", "CK5fiTEgoKg4TSTtp"
 

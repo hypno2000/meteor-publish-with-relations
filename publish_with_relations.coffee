@@ -77,14 +77,11 @@ Meteor.publishWithRelations = (params) ->
 			associations[id] ?= {}
 			doMapping(id, fields, params.mappings)
 		changed: (id, fields) ->
-			console.log fields
 			_.each fields, (value, key) ->
 				changedMappings = _.where(params.mappings, {foreign_key: key})
-				console.log changedMappings
 				doMapping(id, fields, changedMappings)
 			pub.changed(collection._name, id, fields)
 		removed: (id) ->
-			console.log "removed"
 			handle.stop() for handle in associations[id]
 			pub.removed(collection._name, id)
 

@@ -1,39 +1,40 @@
-# NOTE
-__I highly recommend using this package in combination with [cottz:publish-with-relations](https://github.com/Goluis/meteor-publish-with-relations/)__
-__This package is an updated version of [tmeasday:publish-with-relations](https://atmospherejs.com/tmeasday/publish-with-relations) the key difference is better support for arrays and nested arrays__
+# NOTES
+__This package is an updated version of [tmeasday:publish-with-relations](https://atmospherejs.com/tmeasday/publish-with-relations) the key difference is support for arrays, nested arrays, a friendlier interface, and some bug fixes__
 
 ## Install via atmosphere
 ```meteor add lepozepo:publish-with-relations```
 
 ## API
+### Meteor.publishWithRelations(ops) (SERVER SIDE)
+Used inside a ```Meteor.publish()``` function to define relations.
 
-### Basics
+#### Meteor.publishWithRelations __ops.handle__
 
-```javascript
-  Meteor.publish('post', function(id) {
-    Meteor.publishWithRelations({
-      handle: this,
-      collection: Posts,
-      filter: id,
-      mappings: [{
-        key: 'authorId',
-        collection: Meteor.users
-      }, {
-        reverse: true,
-        key: 'postId',
-        collection: Comments,
-        filter: { approved: true },
-        options: {
-          limit: 10,
-          sort: { createdAt: -1 }
-        },
-        mappings: [{
-          key: 'userId',
-          collection: Meteor.users
-        }]
-      }]
-    });
-  });
+### Sample
+```coffeescript
+	Meteor.publish "things", ->
+		Meteor.publishWithRelations
+			handle:this
+			collection:Things
+			mappings:[
+				{
+					foreign_key:"sub_things.deep_things.deep_thing"
+					collection:DeepThings
+				}
+				{
+					foreign_key:"sub_things.sub_thing"
+					collection:SubThings
+				}
+				{
+					foreign_key:"other_thing"
+					collection:OtherThings
+				}
+				{
+					foreign_key:"_id"
+					key:"thing"
+					collection:ReverseThings
+				}
+			]
 ```
 
 This will publish the post specified by id parameter together
