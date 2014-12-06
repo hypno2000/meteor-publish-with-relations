@@ -22,6 +22,7 @@ Meteor.publishWithRelations = (params) ->
 			mapOptions = {}
 			_.defaults mapping,
 				key:"_id"
+				foreign_key:"_id"
 
 			objKey = mapping.foreign_key + mapping.key
 
