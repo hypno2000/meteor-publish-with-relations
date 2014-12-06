@@ -17,6 +17,11 @@
 	# name:String
 	# property:String
 
+@OtherThings = new Meteor.Collection "other_things"
+	# Schema
+	# name:String
+	# property:String
+
 if Meteor.isServer
 	Meteor.startup ->
 		if Things.find().count() is 0
@@ -33,8 +38,13 @@ if Meteor.isServer
 					name:"Deepthing #{thing}"
 					property:Random.id()
 
+				otherthing = OtherThings.insert
+					name:"Otherthing #{thing}"
+					property:Random.id()
+
 				Things.insert
 					name:"Thing #{thing}"
+					other_thing:otherthing
 					sub_things:[
 						sub_thing:subthing
 						quantity:Math.ceil Math.random() * 10
@@ -50,8 +60,16 @@ if Meteor.isServer
 			collection:Things
 			filter:{}
 			mappings:[
-				key:"sub_things.sub_thing"
-				collection:SubThings
+				{
+					reverse:false
+					key:"sub_things.sub_thing"
+					collection:SubThings
+				}
+				{
+					reverse:false
+					key:"other_thing"
+					collection:OtherThings
+				}
 			]
 
 	Meteor.publish "thing", (thing) ->
@@ -84,9 +102,9 @@ if Meteor.isServer
 
 
 if Meteor.isClient
-	# Meteor.subscribe "things"
+	Meteor.subscribe "things"
 	# Meteor.subscribe "thing", "6FsKDdztL4t5rtTJ4"
-	Meteor.subscribe "thing_with_depth", "CK5fiTEgoKg4TSTtp"
+	# Meteor.subscribe "thing_with_depth", "CK5fiTEgoKg4TSTtp"
 
 
 
