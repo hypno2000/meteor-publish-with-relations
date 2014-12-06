@@ -22,6 +22,11 @@
 	# name:String
 	# property:String
 
+@ReverseThings = new Meteor.Collection "reverse_things"
+	# Schema
+	# name:String
+	# property:String
+
 if Meteor.isServer
 	Meteor.startup ->
 		if Things.find().count() is 0
@@ -42,7 +47,7 @@ if Meteor.isServer
 					name:"Otherthing #{thing}"
 					property:Random.id()
 
-				Things.insert
+				thing_id = Things.insert
 					name:"Thing #{thing}"
 					other_thing:otherthing
 					sub_things:[
@@ -51,25 +56,49 @@ if Meteor.isServer
 						deep_things:[
 							quantity:Math.ceil Math.random() * 10
 							deep_thing:deepthing
-						]
 					]
+
+				ReverseThings.insert
+					thing:thing_id
+					name:"Reversething #{thing}"
+					property:Random.id()
+
 
 	Meteor.publish "things", ->
 		Meteor.publishWithRelations
 			handle:this
 			collection:Things
-			filter:{}
 			mappings:[
 				{
-					reverse:false
-					key:"sub_things.sub_thing"
+					foreign_key:"sub_things.deep_things.deep_thing"
+					key:"_id"
+					collection:DeepThings
+				}
+				{
+					foreign_key:"sub_things.sub_thing"
+					key:"_id"
 					collection:SubThings
 				}
 				{
-					reverse:false
-					key:"other_thing"
+					foreign_key:"other_thing"
+					# key:"_id" #This is optional, defaults to _id
 					collection:OtherThings
 				}
+				{
+					foreign_key:"_id"
+					key:"thing"
+					collection:ReverseThings
+				}
+			]
+
+	Meteor.publish "things_with_subthings", ->
+		Meteor.publishWithRelations
+			handle:this
+			collection:Things
+			filter:{}
+			mappings:[
+				foreign_key:"sub_things.sub_thing"
+				collection:SubThings
 			]
 
 	Meteor.publish "thing", (thing) ->
@@ -79,7 +108,7 @@ if Meteor.isServer
 			filter:
 				_id:thing
 			mappings:[
-				key:"sub_things.sub_thing"
+				foreign_key:"sub_things.sub_thing"
 				collection:SubThings
 			]
 
@@ -91,11 +120,11 @@ if Meteor.isServer
 				_id:thing
 			mappings:[
 				{
-					key:"sub_things.deep_things.deep_thing"
+					foreign_key:"sub_things.deep_things.deep_thing"
 					collection:DeepThings
 				}
 				{
-					key:"sub_things.sub_thing"
+					foreign_key:"sub_things.sub_thing"
 					collection:SubThings
 				}
 			]
@@ -103,8 +132,6 @@ if Meteor.isServer
 
 if Meteor.isClient
 	Meteor.subscribe "things"
-	# Meteor.subscribe "thing", "6FsKDdztL4t5rtTJ4"
-	# Meteor.subscribe "thing_with_depth", "CK5fiTEgoKg4TSTtp"
 
 
 

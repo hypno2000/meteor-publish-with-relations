@@ -1,48 +1,75 @@
-# NOTE
-__I highly recommend using this package in combination with [cottz:publish-with-relations](https://github.com/Goluis/meteor-publish-with-relations/)__
-__This package is an updated version of [tmeasday:publish-with-relations](https://atmospherejs.com/tmeasday/publish-with-relations) the key difference is better support for arrays and nested arrays__
+__BREAKING CHANGES:__
+* ```key``` is now ```foreign_key```
+* ```reverse``` does not exist anymore
+* _Migrating_:
+	* If ```reverse:true``` then ```foreign_key:"_id"``` and ```key:yourkey```
+	* If ```reverse:false``` then ```foreign_key:yourkey```
 
-## Install via atmosphere
-```meteor add lepozepo:publish-with-relations```
+__This package is an updated version of [tmeasday:publish-with-relations](https://atmospherejs.com/tmeasday/publish-with-relations) the key difference is support for arrays, nested arrays, a friendlier interface, and some bug fixes__
 
-## API
+### API
+#### Meteor.publishWithRelations(ops) (SERVER SIDE)
+Used inside a ```Meteor.publish()``` function to define relations.
 
-### Basics
+__ops.handle: (REQUIRED)__  
+	Must always be ```this```
 
-```javascript
-  Meteor.publish('post', function(id) {
-    Meteor.publishWithRelations({
-      handle: this,
-      collection: Posts,
-      filter: id,
-      mappings: [{
-        key: 'authorId',
-        collection: Meteor.users
-      }, {
-        reverse: true,
-        key: 'postId',
-        collection: Comments,
-        filter: { approved: true },
-        options: {
-          limit: 10,
-          sort: { createdAt: -1 }
-        },
-        mappings: [{
-          key: 'userId',
-          collection: Meteor.users
-        }]
-      }]
-    });
-  });
+__ops.collection: (REQUIRED)__  
+	The anchor collection from which relations will be made.
+
+__ops.filter: (OPTIONAL)__  
+	The object that filters the collection. This is the equivalent to _filter_ in _collection_.find(_filter_).
+
+__ops.options: (OPTIONAL)__  
+	The object that sorts and limits the collection. This is the equivalent to _options_ in _collection_.find(_filter_,_options_).
+
+__ops.mappings: (OPTIONAL)__  
+	An array of objects that maps relationships between collections using ```foreign_key``` and ```key```
+
+__ops.mappings[].collection: (REQUIRED)__  
+	Defines the collection that will be associated.
+
+__ops.mappings[].foreign_key: (REQUIRED)__  
+	Defines the key to associate with at the parent collection.
+
+__ops.mappings[].key: (DEFAULT:"_id")__  
+	Defines the key to associate with at the current collection.
+
+__ops.mappings[].filter: (OPTIONAL)__  
+	The object that filters the collection. This is the equivalent to _filter_ in _collection_.find(_filter_).
+
+__ops.mappings[].options: (OPTIONAL)__  
+	The object that sorts and limits the collection. This is the equivalent to _options_ in _collection_.find(_filter_,_options_).
+
+### Sample
+```coffeescript
+Meteor.publish "things", ->
+	Meteor.publishWithRelations
+		handle:this
+		collection:Things
+		mappings:[
+			{
+				foreign_key:"sub_things.deep_things.deep_thing"
+				collection:DeepThings
+			}
+			{
+				foreign_key:"sub_things.sub_thing"
+				collection:SubThings
+			}
+			{
+				foreign_key:"other_thing"
+				collection:OtherThings
+			}
+			{
+				foreign_key:"_id"
+				key:"thing"
+				collection:ReverseThings
+			}
+		]
 ```
 
-This will publish the post specified by id parameter together
-with user profile of its author and a list of ten approved comments
-with their author profiles as well.
+This will publish all ```Things``` and their respective ```DeepThings```, ```SubThings```, ```OtherThings```, and ```ReverseThings```
 
-With one call we publish a post to the ```Posts``` collection, post
-comments to the ```Comments``` collection and corresponding authors to
-the ```Meteor.users``` collection so we have all the data we need to
-display a post.
+__IMPORTANT:__ When an association is broken, the package will stop all subscriptions to all broken associations but will not remove the association from the client. This means updates to the object with the broken association will not be recorded BUT the object will persist on the client. New associations will be published as expected. (This should not have an impact unless you are doing something with total published counts).
 
 
