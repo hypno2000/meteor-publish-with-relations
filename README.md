@@ -12,7 +12,7 @@ __This package is an updated version of [tmeasday:publish-with-relations](https:
 Used inside a ```Meteor.publish()``` function to define relations.
 
 __ops.handle:__  
-   Must always be ```this``` __(REQUIRED)__
+    Must always be ```this``` __(REQUIRED)__
 
 __ops.collection:__
 	The anchor collection from which relations will be made. __(REQUIRED)__
