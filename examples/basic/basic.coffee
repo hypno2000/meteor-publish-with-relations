@@ -17,6 +17,16 @@
 	# name:String
 	# property:String
 
+@OtherThings = new Meteor.Collection "other_things"
+	# Schema
+	# name:String
+	# property:String
+
+@ReverseThings = new Meteor.Collection "reverse_things"
+	# Schema
+	# name:String
+	# property:String
+
 if Meteor.isServer
 	Meteor.startup ->
 		if Things.find().count() is 0
@@ -33,8 +43,13 @@ if Meteor.isServer
 					name:"Deepthing #{thing}"
 					property:Random.id()
 
-				Things.insert
+				otherthing = OtherThings.insert
+					name:"Otherthing #{thing}"
+					property:Random.id()
+
+				thing_id = Things.insert
 					name:"Thing #{thing}"
+					other_thing:otherthing
 					sub_things:[
 						sub_thing:subthing
 						quantity:Math.ceil Math.random() * 10
@@ -44,13 +59,47 @@ if Meteor.isServer
 						]
 					]
 
-	Meteor.publish "things", ->
+				ReverseThings.insert
+					thing:thing_id
+					name:"Reversething #{thing}"
+					property:Random.id()
+
+
+	Meteor.publish "other_things", ->
 		Meteor.publishWithRelations
 			handle:this
 			collection:Things
 			filter:{}
 			mappings:[
-				key:"sub_things.sub_thing"
+				{
+					foreign_key:"sub_things.deep_things.deep_thing"
+					key:"_id"
+					collection:DeepThings
+				}
+				{
+					foreign_key:"sub_things.sub_thing"
+					key:"_id"
+					collection:SubThings
+				}
+				{
+					foreign_key:"other_thing"
+					# key:"_id" #This is optional, defaults to _id
+					collection:OtherThings
+				}
+				{
+					foreign_key:"_id"
+					key:"thing"
+					collection:ReverseThings
+				}
+			]
+
+	Meteor.publish "things_with_subthings", ->
+		Meteor.publishWithRelations
+			handle:this
+			collection:Things
+			filter:{}
+			mappings:[
+				foreign_key:"sub_things.sub_thing"
 				collection:SubThings
 			]
 
@@ -61,7 +110,7 @@ if Meteor.isServer
 			filter:
 				_id:thing
 			mappings:[
-				key:"sub_things.sub_thing"
+				foreign_key:"sub_things.sub_thing"
 				collection:SubThings
 			]
 
@@ -73,20 +122,20 @@ if Meteor.isServer
 				_id:thing
 			mappings:[
 				{
-					key:"sub_things.deep_things.deep_thing"
+					foreign_key:"sub_things.deep_things.deep_thing"
 					collection:DeepThings
 				}
 				{
-					key:"sub_things.sub_thing"
+					foreign_key:"sub_things.sub_thing"
 					collection:SubThings
 				}
 			]
 
 
 if Meteor.isClient
-	# Meteor.subscribe "things"
-	# Meteor.subscribe "thing", "6FsKDdztL4t5rtTJ4"
-	Meteor.subscribe "thing_with_depth", "CK5fiTEgoKg4TSTtp"
+	Meteor.subscribe "other_things"
+	# Meteor.subscribe "thing", "FDsQKsZoPgCEpcnWW"
+	# Meteor.subscribe "thing_with_depth", "CK5fiTEgoKg4TSTtp"
 
 
 
