@@ -11,9 +11,8 @@ __This package is an updated version of [tmeasday:publish-with-relations](https:
 #### Meteor.publishWithRelations(ops) (SERVER SIDE)
 Used inside a ```Meteor.publish()``` function to define relations.
 
-__ops.handle:__
-
-	Must always be ```this``` __(REQUIRED)__
+__ops.handle:__  
+   Must always be ```this``` __(REQUIRED)__
 
 __ops.collection:__
 	The anchor collection from which relations will be made. __(REQUIRED)__
