@@ -8,33 +8,34 @@ __This package is an updated version of [tmeasday:publish-with-relations](https:
 ### Meteor.publishWithRelations(ops) (SERVER SIDE)
 Used inside a ```Meteor.publish()``` function to define relations.
 
-#### Meteor.publishWithRelations __ops.handle__
+__ops.handle__
+
 
 ### Sample
 ```coffeescript
-	Meteor.publish "things", ->
-		Meteor.publishWithRelations
-			handle:this
-			collection:Things
-			mappings:[
-				{
-					foreign_key:"sub_things.deep_things.deep_thing"
-					collection:DeepThings
-				}
-				{
-					foreign_key:"sub_things.sub_thing"
-					collection:SubThings
-				}
-				{
-					foreign_key:"other_thing"
-					collection:OtherThings
-				}
-				{
-					foreign_key:"_id"
-					key:"thing"
-					collection:ReverseThings
-				}
-			]
+Meteor.publish "things", ->
+	Meteor.publishWithRelations
+		handle:this
+		collection:Things
+		mappings:[
+			{
+				foreign_key:"sub_things.deep_things.deep_thing"
+				collection:DeepThings
+			}
+			{
+				foreign_key:"sub_things.sub_thing"
+				collection:SubThings
+			}
+			{
+				foreign_key:"other_thing"
+				collection:OtherThings
+			}
+			{
+				foreign_key:"_id"
+				key:"thing"
+				collection:ReverseThings
+			}
+		]
 ```
 
 This will publish the post specified by id parameter together
