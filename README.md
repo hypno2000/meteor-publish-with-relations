@@ -1,3 +1,10 @@
+__BREAKING CHANGES:__
+* ```key``` is now ```foreign_key```
+* ```reverse``` does not exist anymore
+* _Migrating_:
+** If ```reverse:true``` then ```foreign_key:"_id"``` and ```key:yourkey```
+** If ```reverse:false``` then ```foreign_key:yourkey```
+
 __This package is an updated version of [tmeasday:publish-with-relations](https://atmospherejs.com/tmeasday/publish-with-relations) the key difference is support for arrays, nested arrays, a friendlier interface, and some bug fixes__
 
 ### API
