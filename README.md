@@ -1,15 +1,15 @@
-# NOTES
 __This package is an updated version of [tmeasday:publish-with-relations](https://atmospherejs.com/tmeasday/publish-with-relations) the key difference is support for arrays, nested arrays, a friendlier interface, and some bug fixes__
 
-## Install via atmosphere
-```meteor add lepozepo:publish-with-relations```
-
-## API
-### Meteor.publishWithRelations(ops) (SERVER SIDE)
+### API
+#### Meteor.publishWithRelations(ops) (SERVER SIDE)
 Used inside a ```Meteor.publish()``` function to define relations.
 
-__ops.handle__
-
+__ops.handle:__ Must always be ```this``` __(REQUIRED)__
+__ops.collection:__ The anchor collection from which relations will be made. __(REQUIRED)__
+__ops.mappings:__ An array of objects that maps relationships between collections using ```foreign_key``` and ```key```
+__ops.mappings[].collection:__ Defines the collection that will be associated. __(REQUIRED)__
+__ops.mappings[].foreign_key:__ Defines the key to associate with at the parent collection. __(REQUIRED)__
+__ops.mappings[].key:__ Defines the key to associate with at the current collection. __(DEFAULT:"_id")__
 
 ### Sample
 ```coffeescript
