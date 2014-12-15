@@ -1,4 +1,4 @@
-__This package is fork of lepozepo:publish-with-relations, the changes so far are:__
+__This package is fork of [lepozepo:publish-with-relations](https://atmospherejs.com/lepozepo/publish-with-relations), the changes so far are:__
 
 * Objects support. Allowing keys to be deeper than just in root document.
 * Fixed a bug where you could not have two relations referring to same collection in one collection.
@@ -6,6 +6,7 @@ __This package is fork of lepozepo:publish-with-relations, the changes so far ar
   sub-documents and you wanted to publish both of these. For example a document blogPost has
   list of comments and list of images in separate collections.
 
+### Orignal readme
 
 __BREAKING CHANGES:__
 * ```key``` is now ```foreign_key```
