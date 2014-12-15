@@ -4,11 +4,27 @@ Meteor.publishWithRelations = (params) ->
 	filter = params.filter or {}
 	options = params.options or {}
 
+#	console.log '----' + params.collection._name + '----'
+#	dumpMap = (mappings) ->
+#		for m in mappings
+#			_.defaults m,
+#				key:"_id"
+#				foreign_key:"_id"
+#			console.log
+#				key: m.key
+#				foreign_key: m.foreign_key
+#				collection: m.collection._name
+#			if m.mappings
+#				dumpMap m.mappings
+#	dumpMap params.mappings
+
 	associations = {}
 
 	publishAssoc = (collection, filter, options) ->
+#		console.log 'publishAssoc', collection._name, filter, options
 		collection.find(filter, options).observeChanges
 			added: (id, fields) =>
+#				console.log 'added', filter, options, id, fields
 				pub.added(collection._name, id, fields)
 			changed: (id, fields) =>
 				pub.changed(collection._name, id, fields)
@@ -24,25 +40,33 @@ Meteor.publishWithRelations = (params) ->
 				key:"_id"
 				foreign_key:"_id"
 
-			objKey = mapping.foreign_key + mapping.key
+			objKey = mapping.collection._name + '|' + mapping.foreign_key + '|' + mapping.key
 
 			_.extend obj,
 				_id:id
 
 			key_map = mapping.foreign_key.split "."
 			if key_map.length > 1
-				if obj[key_map[0]] and _.isArray obj[key_map[0]]
-					ids = []
-					_.each key_map, (k,i) ->
-						if i is 0 #if start
-							ids = _.pluck obj[k],key_map[i+1]
+				if obj[key_map[0]]
+					if _.isArray obj[key_map[0]]
+						ids = []
+						_.each key_map, (k,i) ->
+							if i is 0 #if start
+								ids = _.pluck obj[k],key_map[i+1]
 
-						else if i isnt key_map.length-1 #if not last
-							ids = _.flatten ids
-							ids = _.pluck ids,key_map[i+1]
+							else if i isnt key_map.length-1 #if not last
+								ids = _.flatten ids
+								ids = _.pluck ids,key_map[i+1]
 
-					mapFilter[mapping.key] = 
-						$in:ids
+						mapFilter[mapping.key] =
+							$in:ids
+					else
+						i = obj
+						for k in key_map
+							break unless i[k]?
+							i = i[k]
+
+						mapFilter[mapping.key] = i
 				else
 					mapFilter = null
 			else
@@ -74,11 +98,12 @@ Meteor.publishWithRelations = (params) ->
 
 	collectionHandle = collection.find(filter, options).observeChanges
 		added: (id, fields) ->
+#			console.log 'added', filter, options, id, fields
 			pub.added(collection._name, id, fields)
 			associations[id] ?= {}
 			doMapping(id, fields, params.mappings)
 		changed: (id, fields) ->
-			_.each fields, (value, key) ->
+			_.each flatten(fields), (value, key) ->
 				changedMappings = _.where(params.mappings, {foreign_key: key})
 				doMapping(id, fields, changedMappings)
 			pub.changed(collection._name, id, fields)
@@ -92,10 +117,4 @@ Meteor.publishWithRelations = (params) ->
 		for id, association of associations
 			handle.stop() for key, handle of association
 		collectionHandle.stop()
-
-
-
-
-
-
 

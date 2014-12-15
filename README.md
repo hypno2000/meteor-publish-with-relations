@@ -6,6 +6,10 @@ __BREAKING CHANGES:__
 
 __This package is an updated version of [tmeasday:publish-with-relations](https://atmospherejs.com/tmeasday/publish-with-relations) the key difference is support for arrays, nested arrays, a friendlier interface, and some bug fixes__
 
+__HYPNO:__
+* Added objects support. Allowing keys to be deeper than just in root document. The syntax changed from ```foreign_key:"sub_things.sub_thing"``` to ```foreign_key:"sub_things>sub_thing"``` to support this. Dot ```.``` is used for key depth markup.
+* Fixed a bug where you could not have two relations referring to same collection.
+
 ### API
 #### Meteor.publishWithRelations(ops) (SERVER SIDE)
 Used inside a ```Meteor.publish()``` function to define relations.
@@ -48,11 +52,11 @@ Meteor.publish "things", ->
 		collection:Things
 		mappings:[
 			{
-				foreign_key:"sub_things.deep_things.deep_thing"
+				foreign_key:"sub_things>deep_things>deep_thing"
 				collection:DeepThings
 			}
 			{
-				foreign_key:"sub_things.sub_thing"
+				foreign_key:"sub_things>sub_thing"
 				collection:SubThings
 			}
 			{

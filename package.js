@@ -1,8 +1,8 @@
 Package.describe({
-	name:"lepozepo:publish-with-relations",
+	name:"hypno:publish-with-relations",
 	summary: "Publish associated collections at once.",
-	version:"1.2.1",
-	git:"https://github.com/Lepozepo/meteor-publish-with-relations"
+	version:"1.2.2",
+	git:"https://github.com/hypno/meteor-publish-with-relations"
 });
 
 Package.on_use(function(api) {
