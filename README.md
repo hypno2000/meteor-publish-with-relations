@@ -1,4 +1,4 @@
-__This package is fork of lepozepo:publish-with-relations, the changes so far are:
+__This package is fork of lepozepo:publish-with-relations, the changes so far are:__
 
 * Objects support. Allowing keys to be deeper than just in root document.
 * Fixed a bug where you could not have two relations referring to same collection.
