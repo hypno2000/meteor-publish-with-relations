@@ -1,7 +1,7 @@
 Package.describe({
 	name:"hypno:publish-with-relations",
 	summary: "Publish associated collections at once.",
-	version:"1.2.4",
+	version:"1.2.5",
 	git:"https://github.com/hypno2000/meteor-publish-with-relations"
 });
 

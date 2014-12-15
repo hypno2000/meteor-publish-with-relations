@@ -1,3 +1,8 @@
+__This package is fork of lepozepo:publish-with-relations, the changes so far are:
+
+* Objects support. Allowing keys to be deeper than just in root document.
+* Fixed a bug where you could not have two relations referring to same collection.
+
 __BREAKING CHANGES:__
 * ```key``` is now ```foreign_key```
 * ```reverse``` does not exist anymore
@@ -5,10 +10,6 @@ __BREAKING CHANGES:__
 	* If ```reverse:false``` then replace ```key:yourkey``` with ```foreign_key:yourkey```
 
 __This package is an updated version of [tmeasday:publish-with-relations](https://atmospherejs.com/tmeasday/publish-with-relations) the key difference is support for arrays, nested arrays, a friendlier interface, and some bug fixes__
-
-__HYPNO:__
-* Added objects support. Allowing keys to be deeper than just in root document. The syntax changed from ```foreign_key:"sub_things.sub_thing"``` to ```foreign_key:"sub_things>sub_thing"``` to support this. Dot ```.``` is used for key depth markup.
-* Fixed a bug where you could not have two relations referring to same collection.
 
 ### API
 #### Meteor.publishWithRelations(ops) (SERVER SIDE)
