@@ -1,10 +1,4 @@
-__This package is fork of [lepozepo:publish-with-relations](https://atmospherejs.com/lepozepo/publish-with-relations), the changes so far are:__
-
-* Objects support. Allowing keys to be deeper than just in root document.
-* Fixed a bug where you could not have two relations referring to same collection in one collection.
-  Also affected a scenario where u have document that has two different list of
-  sub-documents and you wanted to publish both of these. For example a document blogPost has
-  list of comments and list of images in separate collections.
+__This package is fork of [hypno2000:publish-with-relations](https://atmospherejs.com/hypno2000/publish-with-relations). This fork fixes a minor bug that threw an error when a published results set changed. Everything else is exactly the same as @hypno2000's version
 
 ### Orignal readme
 
